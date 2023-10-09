@@ -19,7 +19,7 @@ public class Curriculum {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "numSubject")
+    @Column(name = "num_subject")
     private Integer numSubject;
 
     @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
