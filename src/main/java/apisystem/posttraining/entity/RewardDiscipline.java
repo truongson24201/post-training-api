@@ -4,11 +4,18 @@ package apisystem.posttraining.entity;
 import apisystem.posttraining.entity.enumreration.ERDType;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
+
+import java.io.Serializable;
+import java.util.List;
 
 @Entity
-@Table(name = "rewar_discipline")
-@Data
-public class RewardDiscipline {
+@Table(name = "reward_discipline")
+@Getter
+@Setter
+public class RewardDiscipline  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "reward_discipline_id")
@@ -20,14 +27,8 @@ public class RewardDiscipline {
 
     @Lob
     @Column(name = "content")
+    @Nationalized
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
-    @JoinColumn(name = "student_id",referencedColumnName = "student_id")
-    private Student student;
-
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
-    @JoinColumn(name = "semester_id",referencedColumnName = "semester_id")
-    private Semester semester;
 
 }

@@ -2,42 +2,61 @@ package apisystem.posttraining.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "exam_plan")
-@Data
-public class ExamPlan {
+@Getter
+@Setter
+public class ExamPlan  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "exam_plan_id")
     private Long examPlanId;
 
-    @Column(name = "regis_opening")
-    private Date regisOpening;
+    @Column(name = "date_start",columnDefinition = "DATE")
+    private LocalDate dateStart;
 
-    @Column(name = "regis_closing")
-    private Date regisClosing;
+    @Column(name = "date_end",columnDefinition = "DATE")
+    private LocalDate dateEnd;
 
-    @Column(name = "date_start")
-    private Date dateStart;
-
-    @Column(name = "date_end")
-    private Date dateEnd;
-
+    @Nationalized
     @Column(name = "title")
     private String title;
 
-    @Column(name = "is_delete")
-    private Boolean isDelete;
+    @Column(name = "flag")
+    private Boolean flag;
 
-    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @Column(name = "status")
+    private Boolean status;
+
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     @JoinColumn(name = "semester_id",referencedColumnName = "semester_id")
     private Semester semester;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "examPlan")
-    private List<Exam> exams;
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @JoinColumn(name = "employee_id",referencedColumnName = "employee_id")
+    private Employee updateBy;
 
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "examPlan")
+    private List<ClassCredit> classCredits;
+
+    public ExamPlan(LocalDate dateStart, LocalDate dateEnd, String title, Boolean flag, Semester semester, Boolean status) {
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+        this.title = title;
+        this.flag = flag;
+        this.semester = semester;
+        this.status = status;
+    }
+
+    public ExamPlan() {
+    }
 }

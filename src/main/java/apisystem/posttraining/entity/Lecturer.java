@@ -3,22 +3,27 @@ package apisystem.posttraining.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "lecturer")
-@Data
-public class Lecturer {
+@Getter
+@Setter
+public class Lecturer  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "lecturer_id")
     private Long lecturerId;
 
-    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     @JoinColumn(name = "faculty_id",referencedColumnName = "faculty_id")
     private Faculty faculty;
 
@@ -30,10 +35,16 @@ public class Lecturer {
     @JoinColumn(name = "account_id",referencedColumnName = "account_id")
     private Account account;
 
-    @OneToMany(mappedBy = "lecturer")
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @JoinTable(name = "lecturers_classes",
+            joinColumns = @JoinColumn(name = "lecturer_id"),
+            inverseJoinColumns = @JoinColumn(name = "class_id"))
     private List<Class> classes;
 
     @ManyToMany(fetch = FetchType.LAZY,mappedBy = "lecturers")
     private List<Exam> exams;
+
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "lecturer")
+    private List<ClassCredit> classCredits;
 
 }

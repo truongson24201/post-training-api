@@ -1,9 +1,10 @@
 package apisystem.posttraining.entity.enumreration;
 
 public enum EExamType {
-    quiz,
-    essay,
-    written,
-    oral,
-    project
+    quiz, //trac nhiem
+    essay,// tieu luan
+    written,// tu luan
+    oral,// van dap
+    project, // do an
+    lab // thuc hanh
 }

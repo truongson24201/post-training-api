@@ -1,14 +1,19 @@
 package apisystem.posttraining.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "classroom")
-@Data
-public class Classroom {
+@Getter
+@Setter
+public class Classroom  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "classroom_id")
@@ -20,9 +25,14 @@ public class Classroom {
     @Column(name = "room_type")
     private String roomType;
 
-    @Column(name = "max_size")
-    private Integer maxSize;
+    @Column(name = "capacity")
+    private Integer capacity;
 
-//    @OneToMany(fetch = FetchType.LAZY,mappedBy = "classroom")
-//    private List<Exam> examList;
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "classroom")
+    private List<TimeTable> timeTables;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "classroom")
+    private List<Exam> exams;
 }
